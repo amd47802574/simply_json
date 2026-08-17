@@ -28,15 +28,13 @@ def simplify_result(json_str: str, max_len: int = 100) -> str:
     def _truncate_text(data: Any) -> Any:
         if isinstance(data, str):
             if len(data) > max_len:
-                return data[:max_len] + "..."
+                return data[:max_len]
             return data
         if isinstance(data, dict):
             return {key: _truncate_text(value) for key, value in data.items()}
         if isinstance(data, list):
             if len(data) > 3:
-                kept = [_truncate_text(item) for item in data[:3]]
-                kept.append("...")
-                return kept
+                return [_truncate_text(item) for item in data[:3]]
             return [_truncate_text(item) for item in data]
         return data
 

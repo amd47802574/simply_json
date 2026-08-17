@@ -16,7 +16,7 @@ def simplify_result(json_str: str) -> str:
 
     def _truncate_text(data: Any) -> Any:
         """
-        递归处理数据，截断超过100字符的字符串
+        递归处理数据，删除超过100字符的文本多余部分
 
         Args:
             data: 待处理的数据
@@ -24,22 +24,20 @@ def simplify_result(json_str: str) -> str:
         Returns:
             处理后的数据
         """
-        # 处理字符串：超过100字符则截断
+        # 处理字符串：超过100字符则直接删除多余部分
         if isinstance(data, str):
             if len(data) > 100:
-                return data[:100] + "..."
+                return data[:100]
             return data
 
         # 处理字典
         if isinstance(data, dict):
             return {key: _truncate_text(value) for key, value in data.items()}
 
-        # 处理列表：长度超过3时，保留前3项，超出部分替换为省略号
+        # 处理列表：长度超过3时，直接删除超出部分，仅保留前3项
         if isinstance(data, list):
             if len(data) > 3:
-                kept = [_truncate_text(item) for item in data[:3]]
-                kept.append("...")
-                return kept
+                return [_truncate_text(item) for item in data[:3]]
             return [_truncate_text(item) for item in data]
 
         # 其他类型（数字、布尔、None等）直接返回
