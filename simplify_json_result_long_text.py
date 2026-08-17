@@ -34,8 +34,12 @@ def simplify_result(json_str: str) -> str:
         if isinstance(data, dict):
             return {key: _truncate_text(value) for key, value in data.items()}
 
-        # 处理列表
+        # 处理列表：长度超过3时，保留前3项，超出部分替换为省略号
         if isinstance(data, list):
+            if len(data) > 3:
+                kept = [_truncate_text(item) for item in data[:3]]
+                kept.append("...")
+                return kept
             return [_truncate_text(item) for item in data]
 
         # 其他类型（数字、布尔、None等）直接返回

@@ -33,6 +33,10 @@ def simplify_result(json_str: str, max_len: int = 100) -> str:
         if isinstance(data, dict):
             return {key: _truncate_text(value) for key, value in data.items()}
         if isinstance(data, list):
+            if len(data) > 3:
+                kept = [_truncate_text(item) for item in data[:3]]
+                kept.append("...")
+                return kept
             return [_truncate_text(item) for item in data]
         return data
 
